@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>NaviDAM · Personas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen bg-slate-950 text-white">
+<div class="fixed inset-0 -z-10">
+    <div class="absolute inset-0 bg-[radial-gradient(1000px_700px_at_15%_10%,rgba(239,68,68,.22),transparent_60%),radial-gradient(900px_700px_at_85%_15%,rgba(255,255,255,.10),transparent_55%),linear-gradient(to_bottom,#020617,#0b1220)]"></div>
+    <div class="absolute inset-0 opacity-50 bg-[radial-gradient(circle_at_20%_30%,rgba(255,255,255,.10)_0_2px,transparent_3px),radial-gradient(circle_at_60%_20%,rgba(255,255,255,.08)_0_2px,transparent_3px),radial-gradient(circle_at_80%_40%,rgba(255,255,255,.06)_0_2px,transparent_3px)] bg-[length:280px_280px]"></div>
+</div>
+
+<!-- Header -->
+<header class="sticky top-0 z-20 border-b border-white/10 bg-slate-950/70 backdrop-blur">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+        <a href="index.html" class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center shadow-lg">
+                <span class="text-xl">🎅</span>
+            </div>
+            <div class="leading-tight">
+                <p class="text-xs text-white/70">Postales digitales con música</p>
+                <p class="font-extrabold tracking-tight">NaviDAM</p>
+            </div>
+        </a>
+
+        <nav class="flex items-center gap-2">
+            <a href="personas.html" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-sm">
+                Personas
+            </a>
+            <a href="alta-persona.html" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-sm">
+                Alta
+            </a>
+            <a href="postal.html" class="px-3 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white font-extrabold text-sm">
+                Enviar postal
+            </a>
+        </nav>
+    </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-4 py-10">
+    <div class="rounded-[2rem] bg-white text-slate-900 shadow-2xl ring-1 ring-black/5 overflow-hidden">
+        <div class="p-6 md:p-10">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
+                <div>
+                    <h1 class="text-2xl font-black tracking-tight">Personas registradas</h1>
+                    <p class="text-slate-600 text-sm mt-1">
+                        Elimina personas o envía una postal digital directamente desde el listado.
+                    </p>
+                </div>
+
+                <div class="flex gap-2">
+                    <input
+                            class="w-full md:w-80 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 outline-none focus:ring-2 focus:ring-red-300"
+                            placeholder="Buscar por nombre o email"
+                    />
+                    <button class="px-4 py-2.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-semibold">
+                        🔄
+                    </button>
+                </div>
+            </div>
+
+            <section class="rounded-3xl border border-slate-200 overflow-hidden">
+                <div class="p-4 md:p-6 flex items-center justify-between bg-slate-50">
+                    <p class="text-sm text-slate-700">Listado</p>
+
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-slate-50 text-slate-600">
+                        <tr>
+                            <th class="text-left px-4 py-3">Nombre</th>
+                            <th class="text-left px-4 py-3">Email</th>
+                            <th class="text-left px-4 py-3 w-[340px]">Acciones</th>
+                        </tr>
+                        </thead>
+
+                        <tbody class="divide-y divide-slate-200">
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="h-9 w-9 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center">
+                                        <span>👤</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold">[Nombre]</p>
+                                        <p class="text-xs text-slate-500">ID: [id]</p>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="px-4 py-3 text-slate-700">[Email]</td>
+
+                            <td class="px-4 py-3">
+                                <div class="flex flex-wrap gap-2">
+                                    <a href="postal.html"
+                                       class="px-3 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-extrabold">
+                                        ✉️ Enviar postal
+                                    </a>
+                                    <button class="px-3 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 font-semibold text-slate-900">
+                                        🗑️ Eliminar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="p-6 text-center text-slate-500">
+                    (React mostrará aquí “No hay personas registradas” cuando aplique)
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="border-t border-white/10 bg-slate-950/40">
+    <div class="max-w-6xl mx-auto px-4 py-10 text-sm text-white/70">
+        <div class="flex flex-col md:flex-row gap-6 md:items-center md:justify-between">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center">
+                    <span>🎁</span>
+                </div>
+                <div>
+                    <p class="font-semibold text-white">NaviDAM</p>
+                    <p class="text-xs text-white/60">@2025 Iván Corrales</p>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs">#DAM</span>
+                <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs">#Hackathon</span>
+                <span class="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs">#Software</span>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

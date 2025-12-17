@@ -1,0 +1,98 @@
+name: navidam
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: navidam-backend
+    ports:
+      - "8080:8080"
+    environment:
+      # --- Spring ---
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:h2:mem:navidam;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.h2.Driver
+      SPRING_DATASOURCE_USERNAME: sa
+      SPRING_DATASOURCE_PASSWORD: ""
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_H2_CONSOLE_ENABLED: "true"
+      # --- Integración n8n (backend -> n8n) ---
+      N8N_WEBHOOK_URL: http://n8n:5678/webhook/navidam-send
+      NAVIDAM_TOKEN: ${NAVIDAM_TOKEN:-devtoken}
+      # URL base interna del backend para que n8n “tire” de endpoints
+      BACKEND_BASE_URL_INTERNAL: http://backend:8080
+      # (Opcional) TTL de postales preparadas si las guardas temporalmente
+      NAVIDAM_POSTAL_TTL_MINUTES: "120"
+
+    depends_on:
+      n8n:
+        condition: service_started
+    networks:
+      - navidam-net
+    # (Opcional) si guardas HTML/MIDI temporalmente en disco:
+    volumes:
+      - backend_data:/data
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: navidam-frontend
+    ports:
+      - "5173:80"   # si sirves con nginx (recomendado)
+    environment:
+      VITE_API_BASE_URL: http://localhost:8080
+    depends_on:
+      backend:
+        condition: service_started
+    networks:
+      - navidam-net
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: navidam-n8n
+    ports:
+      - "5678:5678"
+    environment:
+      # Básicos
+      N8N_HOST: localhost
+      N8N_PORT: 5678
+      N8N_PROTOCOL: http
+      NODE_ENV: production
+      GENERIC_TIMEZONE: Europe/Madrid
+      NAVIDAM_TOKEN: ${NAVIDAM_TOKEN:-devtoken}
+      WEBHOOK_URL: http://localhost:5678
+      N8N_EMAIL_MODE: smtp
+      N8N_SMTP_HOST: mailhog
+      N8N_SMTP_PORT: 1025
+      N8N_SMTP_SENDER: "navidam <navidam@local.test>"
+      N8N_SMTP_USER: ""
+      N8N_SMTP_PASS: ""
+      N8N_SMTP_SSL: "false"
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - navidam-net
+    depends_on:
+      mailhog:
+        condition: service_started
+
+  # SMTP de pruebas (muy útil para ver correos sin cuentas reales)
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: navidam-mailhog
+    ports:
+      - "8025:8025"  # UI
+      - "1025:1025"  # SMTP
+    networks:
+      - navidam-net
+
+networks:
+  navidam-net:
+    driver: bridge
+
+volumes:
+  n8n_data:
+  backend_data:
